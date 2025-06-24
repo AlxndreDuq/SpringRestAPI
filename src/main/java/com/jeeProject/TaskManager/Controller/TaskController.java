@@ -27,7 +27,7 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tâche créé avec succès"),
             @ApiResponse(responseCode = "400", description = "Données invalides", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Tâche non créé"),
+            @ApiResponse(responseCode = "500", description = "Tâche non créé", content = @Content),
     })
     @PostMapping("/create")
     public TaskReadUpdateDTO create(@Valid @RequestBody TaskCreateDTO dto) {
@@ -64,10 +64,32 @@ public class TaskController {
     @Operation(summary = "Obtenir une tâche par ID", description = "Retourne une tâche correspondant à l'ID fourni.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tâche trouvé"),
-            @ApiResponse(responseCode = "500", description = "Tâche non trouvé"),
+            @ApiResponse(responseCode = "400", description = "Tâche non trouvé", content = @Content),
     })
     @GetMapping("/{id}")
     public TaskReadUpdateDTO getById(@Parameter @PathVariable Long id) {
         return taskService.getTaskById(id);
+    }
+
+    @Operation(summary = "Passe le status d'une tâche à la suivante", description = "Retourne la tâche correspondant à l'ID fourni avec le status suivant.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Tâche passée au status suivant"),
+            @ApiResponse(responseCode = "400", description = "Changement de statut invalide / Tâche non trouvée", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Tâche non modifiée", content = @Content)
+    })
+    @GetMapping("next/{id}")
+    public TaskReadUpdateDTO nextStatus(@Parameter @PathVariable Long id) {
+        return taskService.nextStatus(id);
+    }
+
+    @Operation(summary = "Passe le status d'une tâche à la précédente", description = "Retourne la tâche correspondant à l'ID fourni avec le status précédent.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Tâche passée au status précédent"),
+            @ApiResponse(responseCode = "400", description = "Changement de statut invalide / Tâche non trouvée", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Tâche non modifiée", content = @Content)
+    })
+    @GetMapping("previous/{id}")
+    public TaskReadUpdateDTO previousStatus(@Parameter @PathVariable Long id) {
+        return taskService.previousStatus(id);
     }
 }

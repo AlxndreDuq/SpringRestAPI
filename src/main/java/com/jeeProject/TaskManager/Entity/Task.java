@@ -93,4 +93,5 @@ public class Task {
     public void setProject(@NotNull(message = "Le projet de la tache est obligatoire") Project project) {
         this.project = project;
     }
+
 }

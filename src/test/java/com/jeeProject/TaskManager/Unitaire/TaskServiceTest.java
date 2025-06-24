@@ -84,4 +84,42 @@ class TaskServiceTest {
 
         assertEquals(1, result.size());
     }
+
+
+    @Test
+    void testNextStatusChangesStatus() {
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        taskService.nextStatus(1L);
+
+        assertEquals(TaskStatus.IN_PROGRESS, task.getStatus());
+
+        task.setStatus(TaskStatus.DONE);
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> taskService.nextStatus(1L),
+                "Un appel à nextStatus() sur DONE doit lancer une exception"
+        );
+
+    }
+
+    @Test
+    void testPreviousStatusChangesStatus() {
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> taskService.previousStatus(1L),
+                "Un appel à previousStatus() sur TODO doit lancer une exception"
+        );
+
+        task.setStatus(TaskStatus.DONE);
+
+        taskService.previousStatus(1L);
+
+        assertEquals(TaskStatus.IN_PROGRESS, task.getStatus());
+    }
 }

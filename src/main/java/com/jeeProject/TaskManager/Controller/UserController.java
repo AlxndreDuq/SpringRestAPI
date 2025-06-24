@@ -26,7 +26,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utilisateur créé avec succès"),
             @ApiResponse(responseCode = "400", description = "Données invalides", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Utilisateur non créé"),
+            @ApiResponse(responseCode = "500", description = "Utilisateur non créé", content = @Content),
     })
     @PostMapping("/create")
     public UsersReadUpdateDTO create(@Valid @RequestBody UsersCreateDTO u) {
@@ -64,7 +64,7 @@ public class UserController {
     @Operation(summary = "Obtenir un utilisateur par ID", description = "Retourne un utilisateur correspondant à l'ID fourni.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utilisateur trouvé"),
-            @ApiResponse(responseCode = "500", description = "Utilisateur non trouvé"),
+            @ApiResponse(responseCode = "400", description = "Utilisateur non trouvé", content = @Content),
     })
     @GetMapping("/{id}")
     public UsersReadUpdateDTO getById(@Parameter @PathVariable Long id) {

@@ -132,6 +132,42 @@ public class TaskControllerIntegrationTest {
                 .andExpect(content().string("true"));
 
         mockMvc.perform(get("/Task/" + task.getId_task()))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testNextStatusSuccess() throws Exception {
+        Task task = taskRepository.save(new Task("TaskNext", "Desc", TaskStatus.TODO, user, project));
+
+        mockMvc.perform(get("/Task/next/" + task.getId_task()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("IN_PROGRESS")));
+
+    }
+
+    @Test
+    void testNextStatusThrowsWhenAtEnd() throws Exception {
+        Task task = taskRepository.save(new Task("TaskDone", "Desc", TaskStatus.DONE, user, project));
+
+        mockMvc.perform(get("/Task/next/" + task.getId_task()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testPreviousStatusSuccess() throws Exception {
+        Task task = taskRepository.save(new Task("TaskPrev", "Desc", TaskStatus.IN_PROGRESS, user, project));
+
+        mockMvc.perform(get("/Task/previous/" + task.getId_task()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("TODO")));
+
+    }
+
+    @Test
+    void testPreviousStatusThrowsWhenAtStart() throws Exception {
+        Task task = taskRepository.save(new Task("TaskTodo", "Desc", TaskStatus.TODO, user, project));
+
+        mockMvc.perform(get("/Task/previous/" + task.getId_task()))
+                .andExpect(status().isBadRequest());
     }
 }

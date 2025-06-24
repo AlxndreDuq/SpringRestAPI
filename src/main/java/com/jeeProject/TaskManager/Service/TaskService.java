@@ -38,4 +38,16 @@ public class TaskService {
         return TaskReadUpdateDTO.fromEntity(task);
     }
 
+    public TaskReadUpdateDTO nextStatus(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.getStatus().next(task);
+        return TaskReadUpdateDTO.fromEntity(taskRepository.save(task));
+    }
+
+    public TaskReadUpdateDTO previousStatus(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.getStatus().previous(task);
+        return TaskReadUpdateDTO.fromEntity(taskRepository.save(task));
+    }
+
 }

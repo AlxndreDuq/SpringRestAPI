@@ -28,7 +28,7 @@ public class ProjectController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Projet créé avec succès"),
             @ApiResponse(responseCode = "400", description = "Données invalides", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Projet non créé"),
+            @ApiResponse(responseCode = "500", description = "Projet non créé", content = @Content),
     })
     @PostMapping("/create")
     public ProjectReadUpdateDTO create(@Valid @RequestBody ProjectCreateDTO p) {
@@ -64,7 +64,7 @@ public class ProjectController {
     @Operation(summary = "Obtenir un projet par ID", description = "Retourne un projet correspondant à l'ID fourni.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Projet trouvé"),
-            @ApiResponse(responseCode = "500", description = "Projet non trouvé"),
+            @ApiResponse(responseCode = "400", description = "Projet non trouvé", content = @Content),
     })
     @GetMapping("/{id}")
     public ProjectReadUpdateDTO getById(@Parameter @PathVariable Long id) {

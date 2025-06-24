@@ -123,6 +123,6 @@ public class ProjectControllerIntegrationTest {
                 .andExpect(content().string("true"));
 
         mockMvc.perform(get("/Project/" + project.getId_project()))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isBadRequest());
     }
 }

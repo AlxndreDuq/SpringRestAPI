@@ -123,6 +123,6 @@ public class UserControllerIntegrationTest {
                 .andExpect(content().string("true"));
 
         mockMvc.perform(get("/User/" + user.getId_user()))
-                .andExpect(status().is5xxServerError()); // lève une exception
+                .andExpect(status().isBadRequest()); // lève une exception
     }
 }

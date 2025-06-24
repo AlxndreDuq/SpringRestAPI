@@ -7,7 +7,7 @@ public class TodoAction implements IActionStatus {
     }
     @Override
     public void previous(Task t) {
-        throw new IllegalStateException("TODO est le premier status");
+        throw new IllegalStateException("Il n'existe pas d'état qui précède TODO");
     }
 
 }
